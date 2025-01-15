@@ -12,7 +12,7 @@ applicant_query_id="voyagerHiringDashJobApplications.731eb2cfbc4991a433044de5e39
 CVS_DIR="CVs"
 APPLICANT_DATA_FILE="applicant_data.csv"
 
-mkdir $CVS_DIR
+[ ! -d $CVS_DIR ] && mkdir $CVS_DIR
 echo "Applicant,First Name,Last Name,Headline,Email,ContactNumber,Rating,Timestamp,JobApplicationNote,JobApplicationTopChoice,SkillBasedQualificationResponse,CandidateRejectionRecord" > "$APPLICANT_DATA_FILE"
 
 # Function to url encode the applicant ID.
@@ -48,7 +48,7 @@ extract_applicant_data() {
   skillBasedQualificationResponse=$(echo "$applicant_data" | jq -r '.data.hiringDashJobApplicationsByIds[0].skillBasedQualificationResponse')
   candidateRejectionRecord=$(echo "$applicant_data" | jq -r '.data.hiringDashJobApplicationsByIds[0].candidateRejectionRecord')
 
-  echo "$identifier,$first_name,$last_name,$headline,$email,$phone_number,$rating,$timestamp,$jobApplicationNote,$jobApplicationTopChoice,$skillBasedQualificationResponse,$candidateRejectionRecord" >> $output_file
+  echo "$identifier,$first_name,$last_name,\"$headline\",$email,$phone_number,$rating,$timestamp,$jobApplicationNote,$jobApplicationTopChoice,\"$skillBasedQualificationResponse\",$candidateRejectionRecord" >> $output_file
   echo "$identifier"
 }
 
