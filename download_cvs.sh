@@ -3,6 +3,9 @@
 # User input
 cv_count=3
 LI_AT_COOKIE="<cookie>"
+job_id="<job-id>"
+list_query_id="<applicant-list-query-id>"
+applicant_query_id="<applicant-query-id>"
 
 # Global constants
 CXRF_TOKEN="ajax:1372933860098402467"
@@ -50,7 +53,7 @@ extract_applicant_data() {
 }
 
 # Get the list of applicants.
-APPLICANT_LIST_URL="https://www.linkedin.com/voyager/api/graphql?variables=(start:0,count:$cv_count,jobPosting:<job-id>,sortType:APPLIED_DATE,sortOrder:DESCENDING,ratings:List(UNRATED,GOOD_FIT,MAYBE))&queryId=<query-id>"
+APPLICANT_LIST_URL="https://www.linkedin.com/voyager/api/graphql?variables=(start:0,count:$cv_count,jobPosting:$job_id,sortType:APPLIED_DATE,sortOrder:DESCENDING,ratings:List(UNRATED,GOOD_FIT,MAYBE))&queryId=$list_query_id"
 
 echo "Retrieving applicant list"
 applicant_list_response=$(curl -s "$APPLICANT_LIST_URL" \
@@ -63,7 +66,7 @@ echo "$applicant_list_response" | jq -r '.data.hiringDashJobApplicationsByCriter
     echo "Retriving applicant data for $entityUrn"
     encoded_entityUrn=$(urlencode "$entityUrn")
 
-    APPLICANT_DATA_URL="https://www.linkedin.com/voyager/api/graphql?variables=(jobApplicationUrns:List($encoded_entityUrn))&queryId=<query-id>"
+    APPLICANT_DATA_URL="https://www.linkedin.com/voyager/api/graphql?variables=(jobApplicationUrns:List($encoded_entityUrn))&queryId=$applicant_query_id"
 
     applicant_response=$(curl -s "$APPLICANT_DATA_URL" \
       -H "csrf-token: $CXRF_TOKEN" \
