@@ -1,4 +1,4 @@
-# How to Bulk Download applicant details from LinkedIn job post
+# Bulk Download applicant details from a LinkedIn job post
 
 This tool will download applicant CVs for a given LinkedIn job application and extract the applicant's details to a CSV file to help you easily analyse the applicant information.
 
